@@ -15,6 +15,10 @@ export class MemoryStorage implements IStorage {
     }
 
     public async set(key: string, value: string, _ttl: number): Promise<void> {
+        if (this._storage.has(key)) {
+            throw new Error(`Key ${key} already exists`);
+        }
+        
         this._storage.set(key, value);
     }
 }
