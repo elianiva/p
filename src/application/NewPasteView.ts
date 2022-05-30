@@ -13,7 +13,7 @@ export class NewPasteView implements IRoute {
         env: IEnvironment,
         ctx: ExecutionContext
     ): Promise<Response> => {
-        const view = newPasteViewTemplate.replace("@unique_id", nanoid());
+        const view = newPasteViewTemplate.replace("@UniqueID", nanoid());
         const textStream = new TextEncoder().encode(view);
         return new Response(textStream, {
             status: 200,
