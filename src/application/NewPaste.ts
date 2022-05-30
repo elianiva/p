@@ -6,6 +6,8 @@ export class NewPaste implements IRoute {
     public readonly path = "/new-paste";
     public readonly method = "POST";
 
+    private readonly MAX_PASTE_SIZE = 1024 * 1024; // 1MB
+
     private readonly _pasteService: PasteService;
 
     constructor(pasteService: PasteService) {
@@ -40,6 +42,13 @@ export class NewPaste implements IRoute {
 
         if (typeof pasteId !== "string" || typeof pasteText !== "string") {
             return new Response("Paste id or text is not a string", {
+                status: 400,
+            });
+        }
+
+        const textSize = new TextEncoder().encode(pasteText).length;
+        if (textSize > this.MAX_PASTE_SIZE) {
+            return new Response("Paste text is too large", {
                 status: 400,
             });
         }
