@@ -1,5 +1,6 @@
 import { NewPasteView } from "@/application/NewPasteView";
 import { NewPaste } from "@/application/NewPaste";
+import { GetPasteView } from "@/application/GetPasteView";
 import { NotFound } from "@/application/NotFound";
 import { PasteService } from "@/application/services/PasteService";
 import { MemoryStorage } from "@/infrastructure/MemoryStorage";
@@ -11,11 +12,12 @@ const memoryStorage = new MemoryStorage();
 const pasteService = new PasteService(memoryStorage, TTL);
 
 const newPasteView = new NewPasteView();
+const getPasteView = new GetPasteView(pasteService);
 const newPaste = new NewPaste(pasteService);
 const notFound = new NotFound();
 
 const router = new Router({
-    routes: [newPasteView, newPaste],
+    routes: [newPasteView, newPaste, getPasteView],
     catchAll: notFound,
 });
 
