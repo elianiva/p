@@ -1,3 +1,4 @@
+import { Html } from "@/business/HtmlDomain/Html";
 import { PasteService } from "@/application/services/PasteService";
 import type { IRoute } from "@/application/interfaces/IRoute";
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
@@ -29,10 +30,12 @@ export class GetPasteView implements IRoute {
         }
 
         const pasteContent = paste.asPlainText;
-        const view = getPasteViewTemplate.replace(
-            "@PasteContent",
-            pasteContent
-        );
+        const view = new Html(getPasteViewTemplate)
+            .interpolate({
+                "@PasteContent": pasteContent,
+            })
+            .minify().content;
+
         return new Response(view, {
             status: 200,
             headers: {

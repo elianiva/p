@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import { Html } from "@/business/HtmlDomain/Html";
 import type { IRoute } from "@/application/interfaces/IRoute";
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
 // can't use the aliased import when using the text loader apparently
@@ -13,16 +14,13 @@ export class NewPasteView implements IRoute {
         env: IEnvironment,
         ctx: ExecutionContext
     ): Promise<Response> => {
-        const view = newPasteViewTemplate.replace("@UniqueID", nanoid());
+        const view = new Html(newPasteViewTemplate)
+            .interpolate({
+                "@UniqueID": nanoid(),
+            })
+            .minify().content;
 
-        // this is a budget html minifier
-        // this reduces half of the size of the html
-        const minifiedView = view
-            .replace(/^\s+/gm, " ") // remove leading indentation
-            .replace(/\n/g, "") // remove newlines
-            .replace(/>(\s+)</g, "><"); // remove whitespace between tags
-
-        return new Response(minifiedView, {
+        return new Response(view, {
             status: 200,
             headers: {
                 "Content-Type": "text/html",
