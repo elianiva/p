@@ -14,9 +14,11 @@ export class NewPasteView implements IRoute {
         ctx: ExecutionContext
     ): Promise<Response> => {
         const view = newPasteViewTemplate.replace("@UniqueID", nanoid());
-        const textStream = new TextEncoder().encode(view);
-        return new Response(textStream, {
+        return new Response(view, {
             status: 200,
+            headers: {
+                "Content-Type": "text/html",
+            },
         });
     };
 }

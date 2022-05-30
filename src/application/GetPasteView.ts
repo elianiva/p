@@ -33,9 +33,11 @@ export class GetPasteView implements IRoute {
             "@PasteContent",
             pasteContent
         );
-        const textStream = new TextEncoder().encode(view);
-        return new Response(textStream, {
+        return new Response(view, {
             status: 200,
+            headers: {
+                "Content-Type": "text/html",
+            },
         });
     };
 }
