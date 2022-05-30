@@ -21,12 +21,13 @@ export class PasteService {
         }
     }
 
-    public async getPaste(id: string, language = "text"): Promise<Paste | undefined> {
+    public async getPaste(
+        id: string,
+        language = "text"
+    ): Promise<Paste | undefined> {
         try {
             const pasteAsString = await this._storage.get(id);
-            if (pasteAsString === undefined) {
-                throw new PasteError(`Paste with an id of ${id} was not found`);
-            }
+            if (pasteAsString === undefined) return undefined;
 
             const paste = new Paste(id, pasteAsString, language);
             return paste;
