@@ -1,4 +1,4 @@
-import { Env } from "@/application/Environment";
+import { IEnvironment } from "@/application/interfaces/IEnvironment";
 
 /**
  * List of route with its handler.
@@ -27,7 +27,7 @@ import { Env } from "@/application/Environment";
      */
     handler: (
         request: Request,
-        env: Env,
+        env: IEnvironment,
         ctx: ExecutionContext
     ) => Promise<Response>;
 }

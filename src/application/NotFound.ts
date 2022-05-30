@@ -1,5 +1,5 @@
-import type { IRoute } from "@/application/IRoute";
-import type { Env } from "@/application/Environment";
+import type { IRoute } from "@/application/interfaces/IRoute";
+import type { IEnvironment } from "@/application/interfaces/IEnvironment";
 
 export class NotFound implements IRoute {
     public readonly path = "*";
@@ -7,7 +7,7 @@ export class NotFound implements IRoute {
 
     public handler = async (
         request: Request,
-        env: Env,
+        env: IEnvironment,
         ctx: ExecutionContext
     ): Promise<Response> => {
         return new Response("Not Found", {
