@@ -46,7 +46,7 @@ export class NewPaste implements IRoute {
 
         try {
             await this._pasteService.createNewPaste(pasteId, pasteText);
-            return new Response("OK", {
+            return new Response(pasteId, {
                 status: 200,
             });
         } catch (err) {
