@@ -23,10 +23,18 @@ export class Router {
         ctx: ExecutionContext
     ): Promise<Response> {
         const url = new URL(request.url);
-        const route = this._routes.find(
-            (route) =>
-                route.path === url.pathname && route.method === request.method
-        );
+        const route = this._routes.find((route) => {
+            const isMethodMatched = route.method === request.method;
+            let isUrlMatched = false;
+
+            if (typeof route.path === "string") {
+                isUrlMatched = route.path === url.pathname;
+            } else {
+                isUrlMatched = route.path.test(url.pathname);
+            }
+
+            return isMethodMatched && isUrlMatched;
+        });
         if (route !== undefined) {
             return route.handler(request, env, ctx);
         }

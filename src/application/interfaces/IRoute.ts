@@ -9,7 +9,7 @@ import { IEnvironment } from "@/application/interfaces/IEnvironment";
      * @param path The path of the route.
      * @returns True if the route matches the request.
      */
-    path: string;
+    path: string | RegExp;
 
     /**
      * Method of the route (GET, POST, etc.)

@@ -4,7 +4,7 @@ import type { IEnvironment } from "@/application/interfaces/IEnvironment";
 import getPasteViewTemplate from "../views/GetPaste.html";
 
 export class GetPasteView implements IRoute {
-    public readonly path = "/";
+    public readonly path = /\/([A-Za-z0-9_-]{21}$)/;
     public readonly method = "GET";
 
     public readonly _pasteService: PasteService;
