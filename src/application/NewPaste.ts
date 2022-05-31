@@ -63,13 +63,15 @@ export class NewPaste implements IRoute {
             });
         } catch (err) {
             if (err instanceof Error) {
-                return new Response(err.message, {
+                return new Response(JSON.stringify({ err: err.message }), {
                     status: 400,
+                    headers: { "Content-Type": "application/json" },
                 });
             }
 
-            return new Response("Unknown Error", {
+            return new Response(JSON.stringify({ err: "Unknown Error" }), {
                 status: 500,
+                headers: { "Content-Type": "application/json" },
             });
         }
     };

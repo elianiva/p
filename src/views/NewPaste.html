@@ -140,7 +140,11 @@
                             text: textarea.value,
                         }),
                     });
-                    const id = await response.text();
+                    const data = await response.json();
+                    if (data.id === undefined) {
+                        alert("Failed to create a new paste. Reason: " + data.err);
+                        return;
+                    }
                     window.location.href = `/${id}`;
                 } catch (err) {
                     alert("Failed to create a new paste. Check the console to see the errors.");
