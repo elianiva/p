@@ -24,26 +24,14 @@ export class Html {
         return this;
     }
 
-    // escape html characters for the injected data just to be safe
-    private _escape(str: string): string {
-        return str
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
     /**
      * Interpolate the template with the given values
      * @param data The data you want to insert
      */
     public interpolate(data: Record<string, string>): Html {
         for (const key in data) {
-            this._template = this._template.replace(
-                `@${key}`,
-                this._escape(data[key])
-            );
+            let value = data[key];
+            this._template = this._template.replace(`@${key}`, value);
         }
 
         return this;
