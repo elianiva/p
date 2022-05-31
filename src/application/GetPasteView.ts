@@ -2,8 +2,9 @@ import { Html } from "@/business/HtmlDomain/Html";
 import { PasteService } from "@/application/services/PasteService";
 import type { IRoute } from "@/application/interfaces/IRoute";
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
-import { NotFound, View } from "@/application/Response";
+import { View } from "@/application/Response";
 import getPasteViewTemplate from "../views/GetPaste.html";
+import notFoundViewTemplate from "../views/NotFound.html";
 
 export class GetPasteView implements IRoute {
     public readonly path = /\/([A-Za-z0-9]{21})(.\w+)?$/;
@@ -36,7 +37,12 @@ export class GetPasteView implements IRoute {
 
         const paste = await this._pasteService.getPaste(id, language);
         if (paste === undefined) {
-            return new NotFound("Paste was not found");
+            const notFoundView = new Html(notFoundViewTemplate)
+                .interpolate({
+                    Message: "Paste with an ID of " + id + " can't be found.",
+                })
+                .minify().content;
+            return new View(notFoundView, 404);
         }
 
         // don't bother trying to highlight if the language isn't provided
