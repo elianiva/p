@@ -2,7 +2,6 @@ import type { IRoute } from "@/application/interfaces/IRoute";
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
 import { PasteService } from "@/application/services/PasteService";
 import { NewPasteDTO } from "@/application/dto/NewPasteDTO";
-import { nanoid } from "nanoid";
 
 export class NewPaste implements IRoute {
     public readonly path = "/new-paste";
@@ -44,7 +43,7 @@ export class NewPaste implements IRoute {
             });
         }
 
-        const textSize = new TextEncoder().encode(pasteText).length;
+        const textSize = new Blob([pasteText]).size;
         if (textSize > this.MAX_PASTE_SIZE) {
             return new Response("Paste text was too large", {
                 status: 400,
@@ -52,8 +51,13 @@ export class NewPaste implements IRoute {
         }
 
         try {
-            const pasteId = nanoid();
-            await this._pasteService.createNewPaste(pasteId, pasteText);
+            const pasteId = await this._pasteService.createNewPaste(pasteText);
+            if (pasteId === undefined) {
+                return new Response("Paste was not created.", {
+                    status: 500,
+                });
+            }
+
             return new Response(pasteId, {
                 status: 200,
             });

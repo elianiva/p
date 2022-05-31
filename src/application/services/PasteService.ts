@@ -1,6 +1,7 @@
 import { Paste } from "@/business/PasteDomain/Paste";
 import { PasteError } from "@/business/PasteDomain/PasteError";
 import type { IStorage } from "@/application/interfaces/IStorage";
+import { nanoid } from "nanoid";
 
 export class PasteService {
     private readonly _storage: IStorage;
@@ -11,9 +12,11 @@ export class PasteService {
         this._ttl = ttl;
     }
 
-    public async createNewPaste(id: string, text: string): Promise<void> {
+    public async createNewPaste(text: string): Promise<string | undefined> {
         try {
+            const id = nanoid();
             await this._storage.set(id, text, this._ttl);
+            return id;
         } catch (error) {
             if (error instanceof Error) {
                 throw new PasteError(error.message);
