@@ -117,7 +117,11 @@
                 const byteSize = new Blob([e.currentTarget.value]).size;
                 const kbSize = (byteSize / 1024).toFixed(2);
                 size.innerText = `${kbSize} KB / 1024 KB`;
-                button.setAttribute("disabled", kbSize > 1024);
+                if (kbSize > 1024) {
+                    button.setAttribute("disabled", true);
+                } else {
+                    button.removeAttribute("disabled");
+                }
             });
             button.addEventListener("click", async (e) => {
                 try {
