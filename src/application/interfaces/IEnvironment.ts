@@ -1,3 +1,3 @@
 export interface IEnvironment {
-    KV_NAMESPACE: KVNamespace;
+    PASTE_STORAGE: KVNamespace;
 }
