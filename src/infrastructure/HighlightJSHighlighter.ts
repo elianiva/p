@@ -43,6 +43,19 @@ export class HighlightJSHighlighter implements IHighlighter {
         hljs.registerLanguage("md", md);
     }
 
+    // inject line number manually since hljs doesn't support them
+    private _injectLineNumbers(text: string): string {
+        const digit = text.length.toString().length;
+        return text
+            .split("\n")
+            .map((line, index) => {
+                return `<span style="color: #768390; padding-right: 1rem; user-select: none;">${(index + 1)
+                    .toString()
+                    .padStart(digit, " ")}</span>${line}`;
+            })
+            .join("\n");
+    }
+
     // we want to inline the styling instead of using a stylesheet
     // this function injects a github-dark-dimmed theme
     // see: https://github.com/highlightjs/highlight.js/blob/main/src/styles/github-dark-dimmed.css
@@ -53,7 +66,9 @@ export class HighlightJSHighlighter implements IHighlighter {
                 /class="hljs-(doctag|keyword|template-tag|template-variable|type)"/g,
                 `style="color: #f47067"`
             )
-            .replace(/class="hljs-title\s(class_(\sinherited_)?|function_)"/g, `style="color: #dcbdfb"`)
+            .replace(/class="hljs-title\s(function_)"/g, `style="color: #dcbdfb"`)
+            // this is a bit different from hljs's default.
+            .replace(/class="hljs-title\sclass_(\sinherited_)?"/g, `style="color: #f69d50"`)
             .replace(
                 /class="hljs-(attr|attribute|literal|meta|number|operator|variable|selector-attr|selector-class|selector-id)/g,
                 `style="color: #6cb6ff"`
@@ -76,6 +91,7 @@ export class HighlightJSHighlighter implements IHighlighter {
      */
     public highlight(text: string, language: string): string {
         const highlighted = hljs.highlight(text, { language }).value;
-        return this._injectStyling(highlighted);
+        const withLineNumbers = this._injectLineNumbers(highlighted);
+        return this._injectStyling(withLineNumbers);
     }
 }
