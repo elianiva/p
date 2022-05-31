@@ -106,7 +106,8 @@
             const textarea = document.getElementById("input");
             const size = document.getElementById("size");
             const button = document.getElementById("submit");
-            textarea.addEventListener("input", function (e) {
+
+            textarea.addEventListener("input", (e) => {
                 /* automatically adjust textarea height */
                 e.currentTarget.style.height = "200px";
                 e.currentTarget.style.height =
@@ -117,6 +118,24 @@
                 const kbSize = (byteSize / 1024).toFixed(2);
                 size.innerText = `${kbSize} KB / 1024 KB`;
                 button.setAttribute("disabled", kbSize > 1024);
+            });
+            button.addEventListener("click", async (e) => {
+                try {
+                    const response = await fetch("/new-paste", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            text: textarea.value,
+                        }),
+                    });
+                    const id = await response.text();
+                    window.location.href = `/${id}`;
+                } catch (err) {
+                    alert("Failed to create a new paste. Check the console to see the errors.");
+                    console.error(err);
+                }
             });
         </script>
         <noscript>
