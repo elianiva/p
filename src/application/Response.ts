@@ -35,9 +35,9 @@ export class NotFound<T> extends Response {
 }
 
 export class View extends Response {
-    constructor(view: string, headers?: Record<string, string>) {
+    constructor(view: string, status = 200, headers?: Record<string, string>) {
         super(view, {
-            status: 200,
+            status: status,
             headers: Object.assign({ "Content-Type": "text/html" }, headers),
         });
     }

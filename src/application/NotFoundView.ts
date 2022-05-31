@@ -1,6 +1,8 @@
 import type { IRoute } from "@/application/interfaces/IRoute";
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
-import { NotFound } from "@/application/Response";
+import { NotFound, View } from "@/application/Response";
+import notFoundViewTemplate from "../views/NotFound.html";
+import { Html } from "@/business/HtmlDomain/Html";
 
 export class NotFoundView implements IRoute {
     public readonly path = "*";
@@ -11,6 +13,11 @@ export class NotFoundView implements IRoute {
         env: IEnvironment,
         ctx: ExecutionContext
     ): Promise<Response> {
-        return new NotFound("Not Found");
+        const view = new Html(notFoundViewTemplate)
+            .interpolate({
+                Message: "No page found for this URL.",
+            })
+            .minify().content;
+        return new View(view, 404);
     }
 }
