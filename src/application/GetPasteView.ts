@@ -10,7 +10,9 @@ export class GetPasteView implements IRoute {
     public readonly path = /\/([A-Za-z0-9]{21})(.\w+)?$/;
     public readonly method = "GET";
 
-    public readonly _pasteService: PasteService;
+    private readonly CACHE_DURATION = 60 * 60 * 24; // 1 day
+
+    private readonly _pasteService: PasteService;
 
     constructor(pasteService: PasteService) {
         this._pasteService = pasteService;
@@ -58,6 +60,8 @@ export class GetPasteView implements IRoute {
             .minify()
             .interpolate({ PasteContent: pasteContent }).content;
 
-        return new View(view);
+        return new View(view, 200, {
+            "Cache-Control": `max-age=${this.CACHE_DURATION}`
+        });
     }
 }
