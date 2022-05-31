@@ -5,7 +5,7 @@ import type { IEnvironment } from "@/application/interfaces/IEnvironment";
 import getPasteViewTemplate from "../views/GetPaste.html";
 
 export class GetPasteView implements IRoute {
-    public readonly path = /\/([A-Za-z0-9_-]{21}$)/;
+    public readonly path = /\/([A-Za-z0-9_-]{21})(.\w+)?$/;
     public readonly method = "GET";
 
     public readonly _pasteService: PasteService;
@@ -20,16 +20,24 @@ export class GetPasteView implements IRoute {
         ctx: ExecutionContext
     ): Promise<Response> {
         const url = new URL(request.url);
-        const id = url.pathname.split("/")[1];
+        const name = url.pathname.split("/")[1];
+        let [id, language] = name.split(".");
 
-        const paste = await this._pasteService.getPaste(id);
+        const paste = await this._pasteService.getPaste(id, language);
         if (paste === undefined) {
             return new Response("Paste was not found", {
                 status: 404,
             });
         }
 
-        const pasteContent = paste.asPlainText;
+        // don't bother trying to highlight if the language isn't provided
+        // this should speed things up a bit since we don't have to do
+        // the expensive highlighting
+        const pasteContent =
+            language === undefined
+                ? paste.asPlainText
+                : paste.asHighlightedText;
+                
         const view = new Html(getPasteViewTemplate).minify().interpolate({
             PasteContent: pasteContent,
         }).content;
