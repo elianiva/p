@@ -10,6 +10,7 @@
                 padding: 0;
                 margin: 0;
                 box-sizing: border-box;
+                font-family: sans-serif;
             }
 
             html,
@@ -19,7 +20,7 @@
             }
 
             body {
-                color: #efefef;
+                color: #ADBAC7;
                 background-color: #22272e;
             }
 
@@ -29,49 +30,91 @@
                 padding: 2rem;
             }
 
-            .heading {
-                font-family: "JetbrainsMono Nerd Font", monospace;
-                text-align: center;
+            .header {
+                display: flex;
+                justify-content: space-between;
                 margin-bottom: 2rem;
             }
 
-            .input {
-                color: #efefef;
-                background-color: #181A21;
+            .heading {
+                font-weight: 500;
+            }
+
+            .button {
+                color: #ADBAC7;
                 border: none;
-                outline: none;
-                padding: 1rem;
-                font-size: 1rem;
-                margin: 0 auto;
+                font-size: 1.125rem;
+                padding: 0.5rem 1.5rem;
+                display: block;
+                border-radius: 0.5rem;
+                background-color: #373E47;
+                border: 1px rgba(205,217,229,0.1) solid;
+            }
+
+            .button:hover {
+                cursor: pointer;
+                filter: brightness(0.95);
+            }
+
+            .input {
                 display: block;
                 min-height: 200px;
                 width: 100%;
+                border: none;
+                outline: none;
+                font-size: 1rem;
+                padding: 1rem;
+                margin: 0 auto;
                 resize: vertical;
                 border-radius: 0.5rem;
                 overflow: hidden;
+                font-family: monospace;
+                color: #ADBAC7;
+                background-color: #181a21;
+            }
+
+            .size {
+                font-size: 1.125rem;
+                display: block;
+                margin-top: 1rem;
+                text-align: center;
+                color: #ADBAC7;
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1 class="heading">CREATE A NEW PASTE</h1>
+            <div class="header">
+                <h1 class="heading">Create a new paste</h1>
+                <button class="button">Submit</button>
+            </div>
             <textarea
                 placeholder="Paste your text here..."
                 spellcheck="false"
                 class="input"
                 id="input"
             ></textarea>
+            <span class="size" id="size">0 KB / 1024 KB</span>
         </div>
         <script>
             const textarea = document.getElementById("input");
-            textarea.addEventListener("input", function(e) {
+            const size = document.getElementById("size");
+            textarea.addEventListener("input", function (e) {
+                /* automatically adjust textarea height */
                 e.currentTarget.style.height = "200px";
-                e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
+                e.currentTarget.style.height =
+                    e.currentTarget.scrollHeight + "px";
+
+                /* count text bytes */
+                const byteSize = new Blob([e.currentTarget.value]).size;
+                const kbSize = (byteSize / 1024).toFixed(2);
+                size.innerText = `${kbSize} KB / 1024 KB`;
             });
         </script>
         <noscript>
             <p>
-                This site requires JavaScript to be enabled. Please enable it and reload the page.
+                This site requires JavaScript to be enabled. Please enable it
+                and reload the page.
             </p>
         </noscript>
     </body>
