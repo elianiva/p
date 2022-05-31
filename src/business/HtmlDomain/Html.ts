@@ -3,7 +3,7 @@ export class Html {
 
     constructor(template: string) {
         if (template.length === 0) {
-            throw new Error("Template is empty");
+            throw new Error("Template must not be empty");
         }
         this._template = template;
     }
