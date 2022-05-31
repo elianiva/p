@@ -141,11 +141,11 @@
                         }),
                     });
                     const data = await response.json();
-                    if (data.id === undefined) {
+                    if (data.id === null) {
                         alert("Failed to create a new paste. Reason: " + data.err);
                         return;
                     }
-                    window.location.href = `/${id}`;
+                    window.location.href = `/${data.id}`;
                 } catch (err) {
                     alert("Failed to create a new paste. Check the console to see the errors.");
                     console.error(err);
