@@ -1,7 +1,9 @@
 import type { IRoute } from "@/application/interfaces/IRoute";
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
 import { PasteService } from "@/application/services/PasteService";
-import { NewPasteDTO } from "@/application/dto/NewPasteDTO";
+import type { NewPasteRequest } from "@/application/dto/NewPasteRequest";
+import type { NewPasteResponse } from "@/application/dto/NewPasteResponse";
+import { BadRequest, InternalServerError, Ok } from "@/application/Response";
 
 export class NewPaste implements IRoute {
     public readonly path = "/new-paste";
@@ -20,59 +22,49 @@ export class NewPaste implements IRoute {
         env: IEnvironment,
         ctx: ExecutionContext
     ): Promise<Response> => {
-        let data: NewPasteDTO;
+        let data: NewPasteRequest;
         try {
             data = await request.json();
         } catch (err) {
-            return new Response(
-                "Invalid Content-Type header. Please use application/json for the Content-Type header.",
-                { status: 400 }
-            );
+            return new BadRequest<NewPasteResponse>({
+                id: null,
+                err: "Invalid Content-Type header. Please use application/json for the Content-Type header.",
+            });
         }
 
         const pasteText = data.text;
         if (pasteText === null) {
-            return new Response("Missing paste text.", {
-                status: 400,
-            });
+            return new BadRequest<NewPasteResponse>({ id: null, err: "Missing paste text" });
         }
 
         if (typeof pasteText !== "string") {
-            return new Response("Paste text was not a string.", {
-                status: 400,
+            return new BadRequest<NewPasteResponse>({
+                id: null,
+                err: "Paste text was not a string.",
             });
         }
 
         const textSize = new Blob([pasteText]).size;
         if (textSize > this.MAX_PASTE_SIZE) {
-            return new Response("Paste text was too large", {
-                status: 400,
-            });
+            return new BadRequest<NewPasteResponse>({ id: null, err: "Paste text was too large" });
         }
 
         try {
             const pasteId = await this._pasteService.createNewPaste(pasteText);
             if (pasteId === undefined) {
-                return new Response("Paste was not created.", {
-                    status: 500,
+                return new InternalServerError<NewPasteResponse>({
+                    id: null,
+                    err: "Paste was not created",
                 });
             }
 
-            return new Response(pasteId, {
-                status: 200,
-            });
+            return new Ok<NewPasteResponse>({ id: pasteId, err: null });
         } catch (err) {
             if (err instanceof Error) {
-                return new Response(JSON.stringify({ err: err.message }), {
-                    status: 400,
-                    headers: { "Content-Type": "application/json" },
-                });
+                return new BadRequest<NewPasteResponse>({ id: null, err: err.message });
             }
 
-            return new Response(JSON.stringify({ err: "Unknown Error" }), {
-                status: 500,
-                headers: { "Content-Type": "application/json" },
-            });
+            return new InternalServerError<NewPasteResponse>({ id: null, err: "Unknown Error" });
         }
     };
 }

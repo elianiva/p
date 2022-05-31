@@ -1,7 +1,8 @@
 import type { IRoute } from "@/application/interfaces/IRoute";
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
+import { NotFound } from "@/application/Response";
 
-export class NotFound implements IRoute {
+export class NotFoundView implements IRoute {
     public readonly path = "*";
     public readonly method = "*";
 
@@ -10,8 +11,6 @@ export class NotFound implements IRoute {
         env: IEnvironment,
         ctx: ExecutionContext
     ): Promise<Response> {
-        return new Response("Not Found", {
-            status: 404,
-        });
+        return new NotFound("Not Found");
     }
 }

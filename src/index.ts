@@ -1,7 +1,7 @@
 import { NewPasteView } from "@/application/NewPasteView";
 import { NewPaste } from "@/application/NewPaste";
 import { GetPasteView } from "@/application/GetPasteView";
-import { NotFound } from "@/application/NotFound";
+import { NotFoundView } from "@/application/NotFoundView";
 import { PasteService } from "@/application/services/PasteService";
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
 import type { IStorage } from "@/application/interfaces/IStorage";
@@ -14,7 +14,7 @@ interface Dependencies {
     highlighter: IHighlighter | null;
     storage: IStorage | null;
     newPasteView: NewPasteView | null;
-    notFound: NotFound | null;
+    notFound: NotFoundView | null;
     pasteService: PasteService | null;
     newPaste: NewPaste | null;
     getPasteView: GetPasteView | null;
@@ -44,7 +44,7 @@ export default {
         D.getPasteView = D.getPasteView ?? new GetPasteView(D.pasteService);
         D.newPasteView = D.newPasteView ?? new NewPasteView();
         D.newPaste = D.newPaste ?? new NewPaste(D.pasteService);
-        D.notFound = D.notFound ?? new NotFound();
+        D.notFound = D.notFound ?? new NotFoundView();
 
         const router = new Router({
             routes: [D.newPasteView, D.newPaste, D.getPasteView],

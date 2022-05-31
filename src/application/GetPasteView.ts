@@ -2,6 +2,7 @@ import { Html } from "@/business/HtmlDomain/Html";
 import { PasteService } from "@/application/services/PasteService";
 import type { IRoute } from "@/application/interfaces/IRoute";
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
+import { NotFound, View } from "@/application/Response";
 import getPasteViewTemplate from "../views/GetPaste.html";
 
 export class GetPasteView implements IRoute {
@@ -35,9 +36,7 @@ export class GetPasteView implements IRoute {
 
         const paste = await this._pasteService.getPaste(id, language);
         if (paste === undefined) {
-            return new Response("Paste was not found", {
-                status: 404,
-            });
+            return new NotFound("Paste was not found");
         }
 
         // don't bother trying to highlight if the language isn't provided
@@ -53,11 +52,6 @@ export class GetPasteView implements IRoute {
             .minify()
             .interpolate({ PasteContent: pasteContent }).content;
 
-        return new Response(view, {
-            status: 200,
-            headers: {
-                "Content-Type": "text/html",
-            },
-        });
+        return new View(view);
     }
 }

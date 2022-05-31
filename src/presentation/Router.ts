@@ -1,5 +1,6 @@
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
 import type { IRoute } from "@/application/interfaces/IRoute";
+import { NotFound } from "@/application/Response";
 
 /**
  * The router class that will handle the routing of the requests.
@@ -40,8 +41,6 @@ export class Router {
             return this._catchAllHandler.handler(request, env, ctx);
         }
 
-        return new Response("Not found", {
-            status: 404,
-        });
+        return new NotFound("Not found");
     }
 }
