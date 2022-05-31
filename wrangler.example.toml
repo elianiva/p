@@ -4,3 +4,8 @@ compatibility_date = "2022-05-30"
 
 [build]
 command = "node build.js"
+
+[[kv_namespaces]]
+binding = "PASTE_STORAGE"
+id = "your_kv_id"
+preview_id = "your_preview_kv_id"
