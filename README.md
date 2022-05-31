@@ -6,7 +6,7 @@ A website where you can paste code and save it. It's basically like a pastebin c
 
 This is meant to run on a [Cloudflare Worker](https://www.cloudflare.com/workers/) and it uses [Cloudflare KV](https://developers.cloudflare.com/workers/runtime-apis/kv/) to store the pasted text. The paste result will expires after 7 days to save space.
 
-You can give the url a suffix like a filename and it will highlight them accordingly using [highlight.js](https://github.com/highlightjs/highlightjs). Currently it only support these languages because I intend to use this for my personal needs. It's also reduces the bundle size if I don't import languages that I don't use.
+You can give the url a suffix like a filename and it will highlight them accordingly using [highlight.js](https://github.com/highlightjs/highlight.js). Currently it only support these languages because I intend to use this for my personal needs. It's also reduces the bundle size if I don't import languages that I don't use.
 
 - Typescript/Javascript
 - HTML, XML
