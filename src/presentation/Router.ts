@@ -17,11 +17,7 @@ export class Router {
         this._catchAllHandler = opts.catchAll;
     }
 
-    async fetch(
-        request: Request,
-        env: IEnvironment,
-        ctx: ExecutionContext
-    ): Promise<Response> {
+    async fetch(request: Request, env: IEnvironment, ctx: ExecutionContext): Promise<Response> {
         const url = new URL(request.url);
         const route = this._routes.find((route) => {
             const isMethodMatched = route.method === request.method;
@@ -35,6 +31,7 @@ export class Router {
 
             return isMethodMatched && isUrlMatched;
         });
+
         if (route !== undefined) {
             return route.handler(request, env, ctx);
         }
