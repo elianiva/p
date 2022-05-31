@@ -30,11 +30,9 @@ export class GetPasteView implements IRoute {
         }
 
         const pasteContent = paste.asPlainText;
-        const view = new Html(getPasteViewTemplate)
-            .interpolate({
-                "@PasteContent": pasteContent,
-            })
-            .minify().content;
+        const view = new Html(getPasteViewTemplate).minify().interpolate({
+            PasteContent: pasteContent,
+        }).content;
 
         return new Response(view, {
             status: 200,
