@@ -20,7 +20,7 @@
             }
 
             body {
-                color: #ADBAC7;
+                color: #adbac7;
                 background-color: #22272e;
             }
 
@@ -41,19 +41,25 @@
             }
 
             .button {
-                color: #ADBAC7;
+                color: #adbac7;
                 border: none;
                 font-size: 1.125rem;
                 padding: 0.5rem 1.5rem;
                 display: block;
                 border-radius: 0.5rem;
-                background-color: #373E47;
-                border: 1px rgba(205,217,229,0.1) solid;
+                background-color: #373e47;
+                border: 1px rgba(205, 217, 229, 0.1) solid;
             }
 
-            .button:hover {
+            .button:not(:disabled):hover {
                 cursor: pointer;
                 filter: brightness(0.95);
+            }
+
+            .button:disabled {
+                cursor: not-allowed;
+                background-color: #373e47;
+                color: #575e66;
             }
 
             .input {
@@ -69,7 +75,7 @@
                 border-radius: 0.5rem;
                 overflow: hidden;
                 font-family: monospace;
-                color: #ADBAC7;
+                color: #adbac7;
                 background-color: #181a21;
             }
 
@@ -78,7 +84,7 @@
                 display: block;
                 margin-top: 1rem;
                 text-align: center;
-                color: #ADBAC7;
+                color: #adbac7;
             }
         </style>
     </head>
@@ -86,7 +92,7 @@
         <div class="container">
             <div class="header">
                 <h1 class="heading">Create a new paste</h1>
-                <button class="button">Submit</button>
+                <button class="button" id="submit">Submit</button>
             </div>
             <textarea
                 placeholder="Paste your text here..."
@@ -99,6 +105,7 @@
         <script>
             const textarea = document.getElementById("input");
             const size = document.getElementById("size");
+            const button = document.getElementById("submit");
             textarea.addEventListener("input", function (e) {
                 /* automatically adjust textarea height */
                 e.currentTarget.style.height = "200px";
@@ -109,6 +116,7 @@
                 const byteSize = new Blob([e.currentTarget.value]).size;
                 const kbSize = (byteSize / 1024).toFixed(2);
                 size.innerText = `${kbSize} KB / 1024 KB`;
+                button.setAttribute("disabled", kbSize > 1024);
             });
         </script>
         <noscript>
