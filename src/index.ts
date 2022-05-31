@@ -14,7 +14,7 @@ interface Dependencies {
     highlighter: IHighlighter | null;
     storage: IStorage | null;
     newPasteView: NewPasteView | null;
-    notFound: NotFoundView | null;
+    notFoundView: NotFoundView | null;
     pasteService: PasteService | null;
     newPaste: NewPaste | null;
     getPasteView: GetPasteView | null;
@@ -27,7 +27,7 @@ const D: Dependencies = {
     highlighter: null,
     storage: null,
     newPasteView: null,
-    notFound: null,
+    notFoundView: null,
     pasteService: null,
     newPaste: null,
     getPasteView: null,
@@ -44,11 +44,11 @@ export default {
         D.getPasteView = D.getPasteView ?? new GetPasteView(D.pasteService);
         D.newPasteView = D.newPasteView ?? new NewPasteView();
         D.newPaste = D.newPaste ?? new NewPaste(D.pasteService);
-        D.notFound = D.notFound ?? new NotFoundView();
+        D.notFoundView = D.notFoundView ?? new NotFoundView();
 
         const router = new Router({
             routes: [D.newPasteView, D.newPaste, D.getPasteView],
-            catchAll: D.notFound,
+            catchAll: D.notFoundView,
         });
 
         // handle the request
