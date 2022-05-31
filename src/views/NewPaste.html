@@ -124,6 +124,12 @@
                 }
             });
             button.addEventListener("click", async (e) => {
+                e.preventDefault();
+
+                button.setAttribute("disabled", true);
+                button.innerText = "Submitting...";
+                document.body.style.cursor = "wait";
+                
                 try {
                     const response = await fetch("/new-paste", {
                         method: "POST",
@@ -139,6 +145,10 @@
                 } catch (err) {
                     alert("Failed to create a new paste. Check the console to see the errors.");
                     console.error(err);
+                } finally {
+                    button.removeAttribute("disabled");
+                    button.innerText = "Submit";
+                    document.body.style.cursor = "default";
                 }
             });
         </script>
