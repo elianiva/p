@@ -9,22 +9,17 @@ export class NewPasteView implements IRoute {
     public readonly path = "/";
     public readonly method = "GET";
 
-    public handler = async (
+    public async handler(
         request: Request,
         env: IEnvironment,
         ctx: ExecutionContext
-    ): Promise<Response> => {
-        const view = new Html(newPasteViewTemplate)
-            .interpolate({
-                "@UniqueID": nanoid(),
-            })
-            .minify().content;
-
+    ): Promise<Response> {
+        const view = new Html(newPasteViewTemplate).minify().content;
         return new Response(view, {
             status: 200,
             headers: {
                 "Content-Type": "text/html",
             },
         });
-    };
+    }
 }

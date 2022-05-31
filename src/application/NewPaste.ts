@@ -1,6 +1,8 @@
 import type { IRoute } from "@/application/interfaces/IRoute";
 import type { IEnvironment } from "@/application/interfaces/IEnvironment";
 import { PasteService } from "@/application/services/PasteService";
+import { NewPasteDTO } from "@/application/dto/NewPasteDTO";
+import { nanoid } from "nanoid";
 
 export class NewPaste implements IRoute {
     public readonly path = "/new-paste";
@@ -19,41 +21,38 @@ export class NewPaste implements IRoute {
         env: IEnvironment,
         ctx: ExecutionContext
     ): Promise<Response> => {
-        let data: FormData;
+        let data: NewPasteDTO;
         try {
-            data = await request.formData();
+            data = await request.json();
         } catch (err) {
             return new Response(
-                "Invalid Content-Type header. Please use multipart/form-data or application/x-www-form-urlencoded.",
-                {
-                    status: 400,
-                }
+                "Invalid Content-Type header. Please use application/json for the Content-Type header.",
+                { status: 400 }
             );
         }
 
-        const pasteId = data.get("id");
-        const pasteText = data.get("text");
-
-        if (pasteId === null || pasteText === null) {
-            return new Response("Missing paste id or text", {
+        const pasteText = data.text;
+        if (pasteText === null) {
+            return new Response("Missing paste text.", {
                 status: 400,
             });
         }
 
-        if (typeof pasteId !== "string" || typeof pasteText !== "string") {
-            return new Response("Paste id or text is not a string", {
+        if (typeof pasteText !== "string") {
+            return new Response("Paste text was not a string.", {
                 status: 400,
             });
         }
 
         const textSize = new TextEncoder().encode(pasteText).length;
         if (textSize > this.MAX_PASTE_SIZE) {
-            return new Response("Paste text is too large", {
+            return new Response("Paste text was too large", {
                 status: 400,
             });
         }
 
         try {
+            const pasteId = nanoid();
             await this._pasteService.createNewPaste(pasteId, pasteText);
             return new Response(pasteId, {
                 status: 200,
