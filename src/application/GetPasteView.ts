@@ -14,6 +14,16 @@ export class GetPasteView implements IRoute {
         this._pasteService = pasteService;
     }
 
+    // escape html characters for the injected data just to be safe
+    private _escape(str: string): string {
+        return str
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
     public async handler(
         request: Request,
         env: IEnvironment,
@@ -35,7 +45,8 @@ export class GetPasteView implements IRoute {
         // the expensive highlighting
         const pasteContent =
             language === undefined
-                ? paste.asPlainText
+                ? // we need to escape the text manually since there's not highlighter to handle it
+                  this._escape(paste.asPlainText)
                 : paste.asHighlightedText;
 
         const view = new Html(getPasteViewTemplate)
