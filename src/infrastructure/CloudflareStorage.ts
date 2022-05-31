@@ -19,7 +19,6 @@ export class CloudflareStorage implements IStorage {
     }
 
     public set(key: string, value: string): Promise<void> {
-        return new Promise((resolve) => resolve());
-        // return this._kv.put(key, value, { expirationTtl: this._ttl });
+        return this._kv.put(key, value, { expirationTtl: this._ttl });
     }
 }
