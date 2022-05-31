@@ -5,9 +5,11 @@ import { IStorage } from "@/application/interfaces/IStorage";
  */
 export class CloudflareStorage implements IStorage {
     private readonly _kv: KVNamespace;
+    private readonly _ttl: number;
 
-    constructor(kv: KVNamespace) {
+    constructor(kv: KVNamespace, ttl: number) {
         this._kv = kv;
+        this._ttl = ttl;
     }
 
     public async get(key: string): Promise<string | undefined> {
@@ -16,7 +18,7 @@ export class CloudflareStorage implements IStorage {
         return item;
     }
 
-    public async set(key: string, value: string, ttl: number): Promise<void> {
-        await this._kv.put(key, value, { expirationTtl: ttl });
+    public async set(key: string, value: string): Promise<void> {
+        await this._kv.put(key, value, { expirationTtl: this._ttl });
     }
 }

@@ -6,7 +6,7 @@ describe("MemoryStorage", (it) => {
         const storage = new MemoryStorage();
         const key = "foo";
         const value = "bar";
-        await storage.set(key, value, 1);
+        await storage.set(key, value);
         expect(await storage.get(key)).toBe(value);
     });
 
@@ -14,8 +14,8 @@ describe("MemoryStorage", (it) => {
         const storage = new MemoryStorage();
         const key = "foo";
         const value = "bar";
-        await storage.set(key, value, 1);
-        expect(storage.set(key, value, 1)).rejects.toThrowError(
+        await storage.set(key, value);
+        expect(storage.set(key, value)).rejects.toThrowError(
             "Key foo already exists"
         );
     });

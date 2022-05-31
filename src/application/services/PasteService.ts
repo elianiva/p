@@ -6,7 +6,6 @@ import { customAlphabet } from "nanoid";
 
 export class PasteService {
     private readonly _storage: IStorage;
-    private readonly _ttl: number;
     private readonly _highlighter: IHighlighter;
     private readonly _generateId = customAlphabet(
         // I don't like seeing - or _ so we use a custom alphabet to remove them
@@ -14,16 +13,15 @@ export class PasteService {
         21
     );
 
-    constructor(storage: IStorage, ttl: number, highlighter: IHighlighter) {
+    constructor(storage: IStorage, highlighter: IHighlighter) {
         this._storage = storage;
-        this._ttl = ttl;
         this._highlighter = highlighter;
     }
 
     public async createNewPaste(text: string): Promise<string | undefined> {
         try {
             const id = this._generateId();
-            await this._storage.set(id, text, this._ttl);
+            await this._storage.set(id, text);
             return id;
         } catch (error) {
             if (error instanceof Error) {

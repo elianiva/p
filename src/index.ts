@@ -10,8 +10,8 @@ import { CloudflareStorage } from "./infrastructure/CloudlareStorage";
 const TTL = 60 * 60 * 24 * 7; // 7 days
 
 const highlightjs = new HighlightJSHighlighter();
-const kvStorage = new CloudflareStorage(PASTE_STORAGE);
-const pasteService = new PasteService(kvStorage, TTL, highlightjs);
+const kvStorage = new CloudflareStorage(PASTE_STORAGE, TTL);
+const pasteService = new PasteService(kvStorage, highlightjs);
 
 const newPasteView = new NewPasteView();
 const getPasteView = new GetPasteView(pasteService);

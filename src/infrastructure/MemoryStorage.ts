@@ -14,7 +14,7 @@ export class MemoryStorage implements IStorage {
         return this._storage.get(key);
     }
 
-    public async set(key: string, value: string, _ttl: number): Promise<void> {
+    public async set(key: string, value: string): Promise<void> {
         if (this._storage.has(key)) {
             throw new Error(`Key ${key} already exists`);
         }
