@@ -26,6 +26,8 @@ You can give the url a suffix like a filename and it will highlight them accordi
 
 I also tried to apply clean architecture for this project. Might be a bit overkill, but I like it overall. Of course it wouldn't be perfect since this is the first time I tried to apply clean architecture so any feedback is more than welcome!
 
+Please don't copy any sensitive information to this website. It's not encrypted and I can definitely see what you paste :p
+
 ## Development
 If you want to develop this project, make sure you have the wrangler CLI installed. You can install it using `npm` or `cargo` by running these commands.
 
