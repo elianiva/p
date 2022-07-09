@@ -7,12 +7,7 @@ export class Paste {
     private readonly _language: string | undefined;
     private readonly _highlighter: IHighlighter;
 
-    constructor(
-        id: string,
-        text: string,
-        language: string | undefined,
-        highlighter: IHighlighter
-    ) {
+    constructor(id: string, text: string, language: string | undefined, highlighter: IHighlighter) {
         if (id.length === 0) {
             throw new PasteError("id must not be empty");
         }
@@ -35,7 +30,12 @@ export class Paste {
         if (this._language === undefined) {
             throw new PasteError("language must be defined for highlighting");
         }
-        
-        return this._highlighter.highlight(this._text, this._language);
+
+        try {
+            return this._highlighter.highlight(this._text, this._language);
+        } catch {
+            // fallback to plain text when it fails but give a warning
+            return `WARNING! <b>${this._language}</b> file extension is not supported, try another file extension to get syntax highlighting.\n\n${this._text}`;
+        }
     }
 }
