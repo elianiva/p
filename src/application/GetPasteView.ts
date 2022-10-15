@@ -25,9 +25,9 @@ export class GetPasteView implements IRoute {
     ): Promise<Response> {
         const url = new URL(request.url);
         const name = url.pathname.split("/")[1];
-        let [id, language] = name.split(".");
+        let [id, languageExtension] = name.split(".");
 
-        const paste = await this._pasteService.getPaste(id, language);
+        const paste = await this._pasteService.getPaste(id, languageExtension);
         if (paste === undefined) {
             const notFoundView = new Html(notFoundViewTemplate)
                 .interpolate({
@@ -41,14 +41,16 @@ export class GetPasteView implements IRoute {
         // this should speed things up a bit since we don't have to do
         // the expensive highlighting
         const pasteContent =
-            language === undefined
+            paste.language === undefined
                 ? // we need to escape the text manually since there's not highlighter to handle it
                   Html.escape(paste.asPlainText)
                 : paste.asHighlightedText;
 
-        const view = new Html(getPasteViewTemplate)
-            .minify()
-            .interpolate({ PasteContent: pasteContent }).content;
+        const view = new Html(getPasteViewTemplate).minify().interpolate({
+            PasteContent: pasteContent,
+            Language: paste.language ?? "Unknown",
+            Extension: paste.extension ?? "Unknown",
+        }).content;
 
         return new View(view, 200, {
             "Cache-Control": `max-age=${this.CACHE_DURATION}`,

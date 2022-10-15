@@ -3,7 +3,7 @@ import { IEnvironment } from "@/application/interfaces/IEnvironment";
 /**
  * List of route with its handler.
  */
- export interface IRoute {
+export interface IRoute {
     /**
      * Path of the route.
      * @param path The path of the route.
@@ -25,9 +25,5 @@ import { IEnvironment } from "@/application/interfaces/IEnvironment";
      * @param ctx Context object.
      * @returns Response object.
      */
-    handler: (
-        request: Request,
-        env: IEnvironment,
-        ctx: ExecutionContext
-    ) => Promise<Response>;
+    handler: (request: Request, env: IEnvironment, ctx: ExecutionContext) => Promise<Response>;
 }

@@ -1,25 +1,43 @@
 import { PasteError } from "@/business/PasteDomain/PasteError";
 import type { IHighlighter } from "@/business/PasteDomain/interfaces/IHighlighter";
 
+type PasteConstructor = {
+    id: string;
+    text: string;
+    language?: string;
+    extension?: string;
+    highlighter: IHighlighter;
+};
+
 export class Paste {
     private readonly _id: string;
     private readonly _text: string;
     private readonly _language: string | undefined;
+    private readonly _extension: string | undefined;
     private readonly _highlighter: IHighlighter;
 
-    constructor(id: string, text: string, language: string | undefined, highlighter: IHighlighter) {
-        if (id.length === 0) {
+    constructor(opts: PasteConstructor) {
+        if (opts.id.length === 0) {
             throw new PasteError("id must not be empty");
         }
 
-        if (text.length === 0) {
+        if (opts.text.length === 0) {
             throw new PasteError("text must not be empty");
         }
 
-        this._id = id;
-        this._text = text;
-        this._language = language;
-        this._highlighter = highlighter;
+        this._id = opts.id;
+        this._text = opts.text;
+        this._language = opts.language;
+        this._extension = opts.extension;
+        this._highlighter = opts.highlighter;
+    }
+
+    public get language(): string | undefined {
+        return this._language;
+    }
+
+    public get extension(): string | undefined {
+        return this._extension;
     }
 
     public get asPlainText(): string {

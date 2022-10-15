@@ -2,18 +2,20 @@
   "name": "p",
   "version": "0.0.0",
   "devDependencies": {
-    "@cloudflare/workers-types": "^3.11.0",
-    "@types/node": "^17.0.36",
-    "c8": "^7.11.3",
-    "esbuild": "^0.14.42",
-    "prettier": "^2.6.2",
-    "typescript": "^4.7.2",
-    "vitest": "^0.13.0",
-    "wrangler": "2.0.7"
+    "@cloudflare/workers-types": "^3.17.0",
+    "@types/node": "^18.11.0",
+    "c8": "^7.12.0",
+    "esbuild": "^0.15.11",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4",
+    "vite": "^3.1.8",
+    "vitest": "^0.24.3",
+    "wrangler": "2.1.11"
   },
   "private": true,
   "scripts": {
-    "start": "wrangler dev",
+    "dev": "wrangler dev ./src/index.ts",
+    "start": "pnpm dev",
     "publish": "wrangler publish",
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
     "test": "vitest run",
@@ -21,7 +23,8 @@
   },
   "type": "module",
   "dependencies": {
-    "highlight.js": "^11.5.1",
-    "nanoid": "^3.3.4"
+    "flourite": "^1.2.2",
+    "highlight.js": "^11.6.0",
+    "nanoid": "^4.0.0"
   }
 }
