@@ -19,6 +19,30 @@ describe("Paste", (it) => {
         );
     });
 
+    it("Should be able to create a new paste without a language or an extension", () => {
+        const paste = new Paste({
+            id: "abcdef",
+            text: "console.log('foo');",
+            highlighter,
+        });
+        expect(paste.asPlainText).toBe("console.log('foo');");
+        expect(paste.language).toBeUndefined();
+        expect(paste.extension).toBeUndefined();
+    });
+
+    it("Should be able to create a new paste with a language and an extension", () => {
+        const paste = new Paste({
+            id: "abcdef",
+            text: "console.log('foo');",
+            highlighter,
+            language: "javascript",
+            extension: "js",
+        });
+        expect(paste.asPlainText).toBe("console.log('foo');");
+        expect(paste.language).toBe("javascript");
+        expect(paste.extension).toBe("js");
+    });
+
     it("Should throw when trying to get highlighted text without a language", () => {
         const paste = new Paste({
             id: "abcdef",
