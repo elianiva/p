@@ -37,8 +37,17 @@ export class GetPasteView implements IRoute {
             return new View(notFoundView, 404);
         }
 
+        // don't bother trying to highlight if the language isn't provided
+        // this should speed things up a bit since we don't have to do
+        // the expensive highlighting
+        const pasteContent =
+            paste.language === undefined
+                ? // we need to escape the text manually since there's not highlighter to handle it
+                  Html.escape(paste.asPlainText)
+                : paste.asHighlightedText;
+
         const view = new Html(getPasteViewTemplate).minify().interpolate({
-            PasteContent: paste.asHighlightedText,
+            PasteContent: pasteContent,
             Language: paste.language ?? "Unknown",
             Extension: paste.extension ?? "Unknown",
         }).content;
