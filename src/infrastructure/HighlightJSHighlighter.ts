@@ -20,6 +20,7 @@ import dockerfile from "highlight.js/lib/languages/dockerfile";
 import json from "highlight.js/lib/languages/json";
 import sql from "highlight.js/lib/languages/sql";
 import markdown from "highlight.js/lib/languages/markdown";
+import yaml from "highlight.js/lib/languages/yaml";
 //#endregion
 
 export class HighlightJSHighlighter implements IHighlighter {
@@ -41,6 +42,7 @@ export class HighlightJSHighlighter implements IHighlighter {
         hljs.registerLanguage("json", json);
         hljs.registerLanguage("sql", sql);
         hljs.registerLanguage("markdown", markdown);
+        hljs.registerLanguage("yaml", yaml);
     }
 
     // inject line number manually since hljs doesn't support them
