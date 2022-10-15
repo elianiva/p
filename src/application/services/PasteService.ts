@@ -38,7 +38,14 @@ export class PasteService {
             const pasteAsString = await this._storage.get(id);
             if (pasteAsString === undefined) return undefined;
 
-            return new Paste(id, pasteAsString, language, this._highlighter);
+
+            return new Paste({
+                id,
+                text: pasteAsString,
+                highlighter: this._highlighter,
+                extension,
+                language,
+            });
         } catch (error) {
             if (error instanceof Error) {
                 throw new PasteError(error.message);
