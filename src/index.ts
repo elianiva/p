@@ -9,9 +9,12 @@ import type { IHighlighter } from "@/business/PasteDomain/interfaces/IHighlighte
 import { HighlightJSHighlighter } from "@/infrastructure/HighlightJSHighlighter";
 import { CloudflareStorage } from "@/infrastructure/CloudflareStorage";
 import { Router } from "@/presentation/Router";
+import { ILanguageDetector } from "./business/PasteDomain/interfaces/ILanguageDetector";
+import { FlouriteDetector } from "./infrastructure/FlouriteDetector";
 
 interface Dependencies {
     highlighter: IHighlighter | null;
+    languageDetector: ILanguageDetector | null;
     storage: IStorage | null;
     newPasteView: NewPasteView | null;
     notFoundView: NotFoundView | null;
@@ -25,6 +28,7 @@ interface Dependencies {
 // it's basically a poorman's dependency injection container
 const D: Dependencies = {
     highlighter: null,
+    languageDetector: null,
     storage: null,
     newPasteView: null,
     notFoundView: null,
@@ -39,8 +43,10 @@ export default {
     fetch(request: Request, env: IEnvironment, ctx: ExecutionContext) {
         // instantiate dependencies if they haven't been already
         D.highlighter = D.highlighter ?? new HighlightJSHighlighter();
+        D.languageDetector = D.languageDetector ?? new FlouriteDetector();
         D.storage = D.storage ?? new CloudflareStorage(env.PASTE_STORAGE, TTL);
-        D.pasteService = D.pasteService ?? new PasteService(D.storage, D.highlighter);
+        D.pasteService =
+            D.pasteService ?? new PasteService(D.storage, D.highlighter, D.languageDetector);
         D.getPasteView = D.getPasteView ?? new GetPasteView(D.pasteService);
         D.newPasteView = D.newPasteView ?? new NewPasteView();
         D.newPaste = D.newPaste ?? new NewPaste(D.pasteService);

@@ -5,14 +5,17 @@ specifiers:
   '@types/node': ^18.11.0
   c8: ^7.12.0
   esbuild: ^0.15.11
+  flourite: ^1.2.2
   highlight.js: ^11.6.0
   nanoid: ^4.0.0
   prettier: ^2.7.1
   typescript: ^4.8.4
+  vite: ^3.1.8
   vitest: ^0.24.3
   wrangler: 2.1.11
 
 dependencies:
+  flourite: 1.2.2
   highlight.js: 11.6.0
   nanoid: 4.0.0
 
@@ -23,6 +26,7 @@ devDependencies:
   esbuild: 0.15.11
   prettier: 2.7.1
   typescript: 4.8.4
+  vite: 3.1.8
   vitest: 0.24.3
   wrangler: 2.1.11
 
@@ -961,6 +965,10 @@ packages:
       locate-path: 6.0.0
       path-exists: 4.0.0
     dev: true
+
+  /flourite/1.2.2:
+    resolution: {integrity: sha512-eSRUyfKaJ0dyyas8GOQEqwYCcBymfjS+bMgzQAq2rA6jCbkeCm7upT8o5HmBT3SILzslzeUqEvjak1MjJY+NrA==}
+    dev: false
 
   /foreground-child/2.0.0:
     resolution: {integrity: sha512-dCIq9FpEcyQyXKCkyzmlPTFNgrCzPudOe+mhvJU5zAtlBnGVy2yKxtfsxK2tQBThwq225jcvBjpw1Gr40uzZCA==}

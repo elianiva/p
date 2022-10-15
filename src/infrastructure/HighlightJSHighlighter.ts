@@ -19,7 +19,7 @@ import dart from "highlight.js/lib/languages/dart";
 import dockerfile from "highlight.js/lib/languages/dockerfile";
 import json from "highlight.js/lib/languages/json";
 import sql from "highlight.js/lib/languages/sql";
-import md from "highlight.js/lib/languages/markdown";
+import markdown from "highlight.js/lib/languages/markdown";
 //#endregion
 
 export class HighlightJSHighlighter implements IHighlighter {
@@ -40,7 +40,7 @@ export class HighlightJSHighlighter implements IHighlighter {
         hljs.registerLanguage("dockerfile", dockerfile);
         hljs.registerLanguage("json", json);
         hljs.registerLanguage("sql", sql);
-        hljs.registerLanguage("md", md);
+        hljs.registerLanguage("markdown", markdown);
     }
 
     // inject line number manually since hljs doesn't support them
@@ -49,7 +49,9 @@ export class HighlightJSHighlighter implements IHighlighter {
         return text
             .split("\n")
             .map((line, index) => {
-                return `<span style="color: #768390; padding-right: 1rem; user-select: none;">${(index + 1)
+                return `<span style="color: #768390; padding-right: 1rem; user-select: none;">${(
+                    index + 1
+                )
                     .toString()
                     .padStart(digit, " ")}</span>${line}`;
             })
